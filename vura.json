@@ -1,0 +1,40 @@
+{
+  "headers": [
+    {
+      "source": "/",
+      "headers": {
+        "Cache-Control": "public, max-age=0, must-revalidate"
+      }
+    },
+    {
+      "source": "/cards/*",
+      "headers": {
+        "Cache-Control": "private, no-store"
+      }
+    },
+    {
+      "source": "/planner",
+      "headers": {
+        "Cache-Control": "private, no-store"
+      }
+    },
+    {
+      "source": "/activity",
+      "headers": {
+        "Cache-Control": "private, no-store"
+      }
+    },
+    {
+      "source": "/build",
+      "headers": {
+        "Cache-Control": "public, max-age=600"
+      }
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/404",
+      "destination": "/404.html"
+    }
+  ]
+}
