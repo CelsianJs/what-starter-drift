@@ -18,6 +18,14 @@ project fixtures -> card/filter/view signals -> computed board/list/detail route
 
 The state module validates stored JSON. Corrupt schemas load seed cards rather than crashing. Card movement is available through both drag/drop and explicit move buttons.
 
+## Vura static deployment notes
+
+Drift is a pure Vite/What client app. It emits HTML aliases for routeable cards and a real `404.html`, then leaves manifest synthesis to Vura instead of writing `dist/manifest.json`.
+
+The deploy config follows the shared Vura parser: no unsupported top-level `rewrites`, and catch-all header sources use `(.*)` rather than glob `*`. The relevant platform sources are `vura-platform/packages/shared/src/config/vura-config.ts`, `routing-rules.ts`, and the static synthesis/archive logic in the CLI.
+
+Removing the unused Vura server runtime path keeps the static archive small; the local `createDistArchive()` check packs Drift at about 20.7 KiB.
+
 ## Actual issues handled
 
 - Drag/drop alone excludes keyboard and touch workflows, so each card also has Move left/right actions.
@@ -31,6 +39,7 @@ The state module validates stored JSON. Corrupt schemas load seed cards rather t
 - Problem: pointer-only drag/drop is not enough. Fix: `moveCardStep()` powers explicit Move left/right buttons on cards. Proof: Playwright moves a card with a button, then verifies the activity log.
 - Problem: direct `/cards/:id` links need to work as static files. Fix: aliases are generated from `src/data/projects.js`. Proof: `npm run build` prints `static aliases OK: 9 routes plus 404` and browser tests open every card.
 - Problem: first viewport hid the product. Fix: homepage columns now show task cards before explanatory panels. Proof: screenshot tests capture the card-first homepage after asserting “Cards first.”
+- Problem: invalid Vura schema fields and a manual manifest made static starters harder to deploy cleanly. Fix: remove unsupported rewrites, use `(.*)` matchers, and let Vura infer static routing from aliases. Proof: config parsing passes, no manual manifest is built, and the Vura CLI archive is about 20.7 KiB.
 
 ## Verification
 

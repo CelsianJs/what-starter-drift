@@ -20,6 +20,10 @@ export default function Build() {
         <p><code>src/routes.js</code> defines explicit What router routes including <code>/cards/:id</code> and a catch-all 404 route. The build script emits concrete aliases for every bundled card plus <code>404.html</code>.</p>
       </section>
       <section>
+        <h2>Vura static packaging</h2>
+        <p>Drift uses concrete HTML aliases and lets Vura synthesize the static manifest. The config avoids unsupported top-level <code>rewrites</code>, uses <code>(.*)</code> matcher syntax, and skips unused server-runtime dependencies.</p>
+      </section>
+      <section>
         <h2>Build journal</h2>
         <p>Card movement is implemented twice: native drag/drop for pointer users and explicit move buttons for keyboard/touch workflows. Static hosting also needed generated detail aliases instead of only index shells.</p>
       </section>
@@ -28,6 +32,7 @@ export default function Build() {
         <p><strong>Movement access:</strong> <code>moveCardStep()</code> backs visible Move left/right buttons, while native drag/drop still works for pointer users. Browser tests cover both paths.</p>
         <p><strong>Shared state:</strong> <code>boardGroups</code> powers the homepage preview, board view, and list route from the same card signals.</p>
         <p><strong>First viewport:</strong> <code>src/pages/Home.jsx</code> now leads with board columns and compact cards, so Drift reads as a planner rather than a landing page.</p>
+        <p><strong>Upload size:</strong> the static Vura archive check is about 20.7 KiB after removing the manual manifest path.</p>
       </section>
     </article>
   );

@@ -58,6 +58,6 @@ Use `npm run deploy:vura:prod` for a production upload. Planned public repo: `Ce
 - `src/data/projects.js` — synthetic cards, columns, assignees, and sort helpers.
 - `src/routes.js` — route table and metadata.
 - `src/pages/Build.jsx` — public implementation notes.
-- `scripts/static-aliases.mjs` — generated card aliases, titles, 404, and Vura manifest proof.
+- `scripts/static-aliases.mjs` — generated card aliases, titles, and a real `404.html` for Vura static synthesis.
 
 See [BUILD.md](./BUILD.md) and `/build` for the longer implementation guide.
