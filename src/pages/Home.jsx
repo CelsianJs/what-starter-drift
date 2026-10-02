@@ -25,7 +25,7 @@ export default function Home() {
       <div class="planner-brief">
         <p class="eyebrow">Project planner</p>
         <h1>Cards first. Copy second.</h1>
-        <p>Drift is a working board/list planner with shared route state, drag movement, keyboard move buttons, filters, activity history, and local export.</p>
+        <p>Drift is a working planner for synthetic project cards: move tasks by drag or keyboard, filter the board, review activity, and export a local snapshot.</p>
         <div class="hero-actions">
           <Link class="button primary" href="/planner">Open full planner</Link>
           <Link class="button" href="/activity">Activity trail</Link>
