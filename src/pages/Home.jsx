@@ -1,12 +1,22 @@
 import { Link } from 'what-framework/router';
 import { columns } from '../data/projects.js';
-import { cards, moveCardStep, plannerSummary } from '../state/board.js';
+import { cards, moveCardStep, moveTarget, plannerSummary, shortDue } from '../state/board.js';
 
 function previewGroups() {
   return columns.map((column) => ({
     ...column,
     cards: cards().filter((card) => card.status === column.id),
   }));
+}
+
+function MoveButton({ card, direction }) {
+  const target = () => moveTarget(card, direction);
+  const label = () => target() ? `Move ${card.title} to ${target().label}` : `${card.title} is already at the ${direction < 0 ? 'first' : 'last'} lane`;
+  return (
+    <button class="button small" aria-label={label} disabled={!target()} onClick={() => moveCardStep(card.id, direction)}>
+      {direction < 0 ? '←' : '→'}
+    </button>
+  );
 }
 
 export default function Home() {
@@ -32,11 +42,11 @@ export default function Home() {
             <h2>{column.label}<span>{column.cards.length}</span></h2>
             {column.cards.slice(0, 2).map((card) => (
               <article class="task-card compact-card">
-                <p class="row-kicker">{card.assignee} · {card.due}</p>
+                <p class="row-kicker"><span>{card.assignee}</span><span>{shortDue(card.due)}</span></p>
                 <h3><Link href={`/cards/${card.id}`}>{card.title}</Link></h3>
                 <div class="move-row">
-                  <button class="button small" onClick={() => moveCardStep(card.id, -1)}>←</button>
-                  <button class="button small" onClick={() => moveCardStep(card.id, 1)}>→</button>
+                  <MoveButton card={card} direction={-1} />
+                  <MoveButton card={card} direction={1} />
                 </div>
               </article>
             ))}

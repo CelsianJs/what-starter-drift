@@ -30,6 +30,8 @@ export default function Build() {
       <section>
         <h2>Problem → fix → proof</h2>
         <p><strong>Movement access:</strong> <code>moveCardStep()</code> backs visible Move left/right buttons, while native drag/drop still works for pointer users. Browser tests cover both paths.</p>
+        <p><strong>Named edge states:</strong> <code>moveTarget()</code> gives compact arrows descriptive labels and disables impossible moves at the first and last lane, preserving drag controls while making the board keyboard-readable.</p>
+        <p><strong>Detail activity:</strong> <code>activityForCard()</code> filters the global activity signal by card title, so direct card routes teach how one state stream can feed a focused detail panel.</p>
         <p><strong>Shared state:</strong> <code>boardGroups</code> powers the homepage preview, board view, and list route from the same card signals.</p>
         <p><strong>First viewport:</strong> <code>src/pages/Home.jsx</code> now leads with board columns and compact cards, so Drift reads as a planner rather than a landing page.</p>
         <p><strong>Upload size:</strong> the static Vura archive check is about 20.7 KiB after removing the manual manifest path.</p>

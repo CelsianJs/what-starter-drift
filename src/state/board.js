@@ -65,6 +65,29 @@ export const plannerSummary = computed(() => ({
   unowned: cards().filter((card) => card.assignee === 'No owner').length,
 }));
 
+export function columnIndex(status) {
+  return columns.findIndex((column) => column.id === status);
+}
+
+export function moveTarget(card, direction) {
+  if (!card) return null;
+  const index = columnIndex(card.status);
+  const next = index + direction;
+  if (index < 0 || next < 0 || next >= columns.length) return null;
+  return columns[next];
+}
+
+export function shortDue(date) {
+  const parsed = new Date(`${date}T00:00:00`);
+  if (Number.isNaN(parsed.getTime())) return date;
+  return parsed.toLocaleDateString([], { month: 'short', day: 'numeric' });
+}
+
+export function activityForCard(card) {
+  if (!card) return [];
+  return activity().filter((event) => event.text.includes(`“${card.title}”`)).slice(0, 4);
+}
+
 function eventId() {
   return `evt-${Math.random().toString(36).slice(2, 8)}`;
 }
@@ -87,8 +110,9 @@ export function moveCard(cardId, status) {
 export function moveCardStep(cardId, direction) {
   const card = cardById(cards(), cardId);
   if (!card) return;
-  const index = columns.findIndex((column) => column.id === card.status);
+  const index = columnIndex(card.status);
   const next = Math.max(0, Math.min(columns.length - 1, index + direction));
+  if (next === index) return;
   moveCard(cardId, columns[next].id);
 }
 

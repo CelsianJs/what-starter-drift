@@ -33,10 +33,13 @@ Removing the unused Vura server runtime path keeps the static archive small; the
 - Storage can be blocked or full, so persistence errors are caught and explained in the header.
 - The homepage originally read like a landing page. The fix was to render a compact live board preview in `src/pages/Home.jsx`, with movement controls visible immediately.
 - The board preview and full planner both read `boardGroups`, so the starter demonstrates one global state model across multiple route compositions.
+- A review caught wrapping ISO dates and nameless arrow buttons in the compact board. The home preview now formats dates as short non-wrapping labels and edge arrows are disabled with descriptive names.
+- Card detail originally had one sparse editor panel. It now shows move actions and a card-scoped activity slice from the same activity signal; the MoveButton receives a card accessor so its label updates after state changes.
 
 ## Problem → fix → proof
 
 - Problem: pointer-only drag/drop is not enough. Fix: `moveCardStep()` powers explicit Move left/right buttons on cards. Proof: Playwright moves a card with a button, then verifies the activity log.
+- Problem: compact arrows had no names, dates wrapped mid-ISO string, and detail pages hid activity. Fix: `moveTarget()`, `shortDue()`, and `activityForCard()` drive disabled/named move buttons, short dates, and a detail activity panel. Proof: Playwright checks the disabled first-lane affordance, "Oct 4", and card-detail activity after a move.
 - Problem: direct `/cards/:id` links need to work as static files. Fix: aliases are generated from `src/data/projects.js`. Proof: `npm run build` prints `static aliases OK: 9 routes plus 404` and browser tests open every card.
 - Problem: first viewport hid the product. Fix: homepage columns now show task cards before explanatory panels. Proof: screenshot tests capture the card-first homepage after asserting “Cards first.”
 - Problem: invalid Vura schema fields and a manual manifest made static starters harder to deploy cleanly. Fix: remove unsupported rewrites, use `(.*)` matchers, and let Vura infer static routing from aliases. Proof: config parsing passes, no manual manifest is built, and the Vura CLI archive is about 20.7 KiB.

@@ -20,6 +20,8 @@ test.afterEach(async ({ page }) => {
 test('moves cards, filters list, exports JSON, records activity, and screenshots', async ({ page }, testInfo) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { name: /cards first/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Outline onboarding tour is already at the first lane/i })).toBeDisabled();
+  await expect(page.getByText('Oct 4')).toBeVisible();
 
   await page.getByRole('navigation', { name: 'Primary' }).getByRole('link', { name: 'Planner', exact: true }).click();
   await page.locator('article').filter({ has: page.getByRole('link', { name: 'Outline onboarding tour' }) }).getByRole('button', { name: 'Move right' }).click();
@@ -54,6 +56,13 @@ test('supports native drag and every direct card route', async ({ page }) => {
     await page.goto(`/cards/${card.id}`);
     await expect(page.getByRole('heading', { name: card.title })).toBeVisible();
   }
+});
+
+test('card detail exposes named move actions and local card activity', async ({ page }) => {
+  await page.goto('/cards/card-tide');
+  await page.getByRole('button', { name: 'Move left to Backlog' }).click();
+  await expect(page.getByText(/Moved “Ship billing settings polish” to Backlog/i)).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Move right to Active' })).toBeVisible();
 });
 
 test('storage-denied browsers keep session edits without crashing', async ({ page }) => {

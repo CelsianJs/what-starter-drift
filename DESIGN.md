@@ -25,17 +25,18 @@
 - Color: lilac canvas, peach warmth, plum controls, white cards
 - Typography: heavy system headings and plain readable body text
 - Layout: the planner board is the homepage artifact; columns/list cards must be visible in the first viewport so Drift reads as a working planner rather than a landing page
-- Composition: compact copy sits beside or above live cards; board columns carry spatial context with lane headers, counts, and movement controls
+- Composition: compact copy sits beside or above live cards; board columns carry spatial context with lane headers, counts, short due dates, named disabled edge moves, and movement controls
 - Motion: short page/card entrance with reduced-motion fallback
 
 ## Accessibility
-- Native buttons/selects/inputs, visible focus rings, one `h1` per route, keyboard movement controls in addition to drag/drop, and reduced-motion support.
+- Native buttons/selects/inputs, visible focus rings, one `h1` per route, keyboard movement controls in addition to drag/drop, disabled impossible moves, and reduced-motion support.
 
 ## Interaction states
 - Empty filtered board columns and empty filter results have copy.
 - Malformed storage resets to seed cards.
 - Storage denied displays session-only copy while keeping edits working.
 - Export is a local JSON download only.
+- Card detail shows a card-scoped activity slice so updates are visible near the editor, not only on the activity route.
 
 ## Implementation constraints
 - What Framework 0.13.10, what-compiler 0.13.10, Vite 6.4.3, Vitest 4.1.11, Vura CLI 0.3.0.

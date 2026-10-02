@@ -1,6 +1,15 @@
 import { Link, route } from 'what-framework/router';
 import { assignees, cardById, columns, seedCards } from '../data/projects.js';
-import { cards, moveCard, updateCard } from '../state/board.js';
+import { activityForCard, cards, moveCard, moveCardStep, moveTarget, shortDue, updateCard } from '../state/board.js';
+
+function MoveButton({ card, direction }) {
+  const target = () => moveTarget(card(), direction);
+  return (
+    <button class="button" disabled={!target()} onClick={() => moveCardStep(card().id, direction)}>
+      {() => target() ? `Move ${direction < 0 ? 'left' : 'right'} to ${target().label}` : direction < 0 ? 'First lane' : 'Last lane'}
+    </button>
+  );
+}
 
 export default function CardDetail() {
   const card = () => cardById(cards(), route.params.id);
@@ -17,9 +26,13 @@ export default function CardDetail() {
   return (
     <section class="page-enter card-detail">
       <Link class="text-link" href="/planner">← Planner</Link>
-      <p class="eyebrow">{current().assignee} · due {current().due}</p>
+      <p class="eyebrow">{current().assignee} · due {shortDue(current().due)}</p>
       <h1>{current().title}</h1>
       <p>{current().detail}</p>
+      <div class="action-row card-move-actions">
+        <MoveButton card={current} direction={-1} />
+        <MoveButton card={current} direction={1} />
+      </div>
       <div class="editor-grid">
         <label><span>Card status</span><select value={current().status} onChange={(event) => moveCard(current().id, event.target.value)}>
           {columns.map((column) => <option value={column.id}>{column.label}</option>)}
@@ -29,6 +42,12 @@ export default function CardDetail() {
         </select></label>
         <label><span>Due date</span><input type="date" value={current().due} onInput={(event) => updateCard(current().id, { due: event.target.value })} /></label>
       </div>
+      <aside class="card-activity" aria-label="Card activity">
+        <h2>Recent card activity</h2>
+        {activityForCard(current()).length ? activityForCard(current()).map((event) => (
+          <p><strong>{event.at}</strong><span>{event.text}</span></p>
+        )) : <p class="empty-note">No edits recorded for this card yet. Move it or change a field to add an activity entry.</p>}
+      </aside>
     </section>
   );
 }
