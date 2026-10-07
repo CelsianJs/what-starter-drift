@@ -24,10 +24,12 @@ test('moves cards, filters list, exports JSON, records activity, and screenshots
   await expect(page.getByText('Oct 4')).toBeVisible();
 
   await page.getByRole('navigation', { name: 'Primary' }).getByRole('link', { name: 'Planner', exact: true }).click();
-  await page.locator('article').filter({ has: page.getByRole('link', { name: 'Outline onboarding tour' }) }).getByRole('button', { name: 'Move right' }).click();
+  await page.locator('article').filter({ has: page.getByRole('link', { name: 'Outline onboarding tour' }) }).getByRole('button', { name: 'Move right to Active' }).click();
   await page.getByRole('button', { name: 'List' }).click();
   await page.getByLabel('Assignee filter').selectOption('Inez');
   await expect(page.getByRole('link', { name: 'QA mobile list density' })).toBeVisible();
+  await expect(page.locator('.list-row')).toHaveCount(1);
+  await expect(page.getByRole('link', { name: 'Outline onboarding tour' })).toHaveCount(0);
 
   const download = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Export JSON' }).click();
@@ -40,6 +42,19 @@ test('moves cards, filters list, exports JSON, records activity, and screenshots
   await page.waitForTimeout(350);
   mkdirSync('test-results/screenshots', { recursive: true });
   await page.screenshot({ path: `test-results/screenshots/drift-${testInfo.project.name}.png`, fullPage: false });
+});
+
+test('board edge moves are disabled and list filters update without changing view', async ({ page }) => {
+  await page.goto('/planner');
+  await expect(page.getByLabel('Backlog column').getByRole('button', { name: /Move left/ })).toBeDisabled();
+  await expect(page.getByLabel('Done column').getByRole('button', { name: /Move right/ })).toBeDisabled();
+  await page.getByRole('button', { name: 'List', exact: true }).click();
+  await page.getByLabel('Assignee filter').selectOption('Inez');
+  await expect(page.locator('.list-row')).toHaveCount(1);
+  await page.getByLabel('Assignee filter').selectOption('Mara');
+  await expect(page.locator('.list-row')).toHaveCount(2);
+  await page.getByLabel('Assignee filter').selectOption('all');
+  await expect(page.locator('.list-row')).toHaveCount(5);
 });
 
 test('supports native drag and every direct card route', async ({ page }) => {

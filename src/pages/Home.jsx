@@ -36,7 +36,7 @@ export default function Home() {
           <span>{plannerSummary().unowned} unowned</span>
         </div>
       </div>
-      <div class="board-preview" aria-label="Planner board preview">
+      <div class="preview-wrap"><p class="lane-cue">Scroll across all four lanes →</p><div class="board-preview" aria-label="Planner board preview" tabindex="0">
         {previewGroups().map((column) => (
           <section class="preview-column">
             <h2>{column.label}<span>{column.cards.length}</span></h2>
@@ -52,7 +52,7 @@ export default function Home() {
             ))}
           </section>
         ))}
-      </div>
+      </div></div>
     </section>
   );
 }

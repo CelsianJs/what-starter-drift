@@ -1,6 +1,6 @@
 import { Link } from 'what-framework/router';
 import { assignees, columns } from '../data/projects.js';
-import { assigneeFilter, boardGroups, exportPlanner, moveCard, moveCardStep, resetPlanner, viewMode } from '../state/board.js';
+import { assigneeFilter, boardGroups, exportPlanner, moveCard, moveCardStep, moveTarget, resetPlanner, shortDue, viewMode } from '../state/board.js';
 
 let dragDropInstalled = false;
 
@@ -69,13 +69,13 @@ function Card({ card }) {
       draggable="true"
       onDragStart={(event) => event.dataTransfer.setData('text/plain', card.id)}
     >
-      <p class="row-kicker">{card.assignee} · due {card.due}</p>
+      <p class="row-kicker">{card.assignee} · due {shortDue(card.due)}</p>
       <h2><Link href={`/cards/${card.id}`}>{card.title}</Link></h2>
       <p>{card.detail}</p>
       <div class="tag-row">{card.tags.map((tag) => <span>{tag}</span>)}</div>
       <div class="move-row">
-        <button class="button small" onClick={() => moveCardStep(card.id, -1)}>Move left</button>
-        <button class="button small" onClick={() => moveCardStep(card.id, 1)}>Move right</button>
+        <button class="button small" disabled={!moveTarget(card, -1)} aria-label={moveTarget(card, -1) ? `Move left to ${moveTarget(card, -1).label}` : 'Move left — already in first lane'} onClick={() => moveCardStep(card.id, -1)}>Move left</button>
+        <button class="button small" disabled={!moveTarget(card, 1)} aria-label={moveTarget(card, 1) ? `Move right to ${moveTarget(card, 1).label}` : 'Move right — already in last lane'} onClick={() => moveCardStep(card.id, 1)}>Move right</button>
       </div>
     </article>
   );
@@ -101,10 +101,10 @@ function BoardView() {
 }
 
 function ListView() {
-  const cards = boardGroups().flatMap((group) => group.cards.map((card) => ({ ...card, column: group.label })));
+  const cards = () => boardGroups().flatMap((group) => group.cards.map((card) => ({ ...card, column: group.label })));
   return (
     <div class="list-view">
-      {cards.length === 0 ? <div class="empty-state"><h2>No cards match this filter.</h2><p>Clear the assignee filter to see the full plan.</p></div> : cards.map((card) => (
+      {cards().length === 0 ? <div class="empty-state"><h2>No cards match this filter.</h2><p>Clear the assignee filter to see the full plan.</p></div> : cards().map((card) => (
         <article class="list-row">
           <div>
             <p class="row-kicker">{card.column} · {card.assignee}</p>

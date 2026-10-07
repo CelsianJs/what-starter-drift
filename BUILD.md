@@ -1,5 +1,20 @@
 # Build notes for agents
 
+## Reactive lists and bounded lane moves
+
+The list derives its cards through an accessor rather than taking a one-time snapshot. Changing the assignee now updates rows while the list remains open. Full-board move buttons name the destination and disable impossible edge moves, matching the home preview. The mobile preview provides a lane-scroll cue and a focusable scrolling container.
+
+The relevant source pattern is:
+
+```js
+const cards = () => boardGroups().flatMap((group) => group.cards.map((card) => ({ ...card, column: group.label })));
+```
+
+Browser tests change Inez → Mara → All without changing view, assert one/two/five rows, and require the first/last lane's impossible moves to be disabled.
+
+Keep the product anonymous and local/synthetic. These workflow improvements do not add authentication, collaboration, payments, ingestion, or durable server storage.
+
+
 Drift is intentionally compact but shaped like a real planning app.
 
 ## What it demonstrates
