@@ -2,7 +2,7 @@
 
 ## Source of truth
 - Status: Active
-- Last refreshed: 2026-10-01
+- Last refreshed: 2026-10-07
 - Primary product surfaces: overview, board/list planner, card detail, activity trail, build notes
 - Evidence reviewed: What Framework routing/state examples, current getting-started guidance, and the Vura deploy script pattern used by these starters
 
@@ -43,5 +43,12 @@
 - No external assets, runtime network, tracking, auth, or paid service.
 - Tests cover unit movement logic, browser flows, direct routes, storage denial, 404, keyboard focus, export, and screenshots.
 
+## Operational refinement
+
+The list derives its cards through an accessor rather than taking a one-time snapshot. Changing the assignee now updates rows while the list remains open. Full-board move buttons name the destination and disable impossible edge moves, matching the home preview. The mobile preview provides a lane-scroll cue and a focusable scrolling container.
+
+Validation contract: Browser tests change Inez → Mara → All without changing view, assert one/two/five rows, and require the first/last lane's impossible moves to be disabled.
+
 ## Open questions
+
 - [ ] Choose the final Vura subdomain during deployment.

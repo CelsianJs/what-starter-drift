@@ -4,6 +4,11 @@ export default function Build() {
       <p class="eyebrow">Agent reference</p>
       <h1>How Drift is built.</h1>
       <section>
+        <h2>Lists are live read models</h2>
+        <p>Computing a plain card array at component creation froze the list filter. An accessor keeps the list subscribed to boardGroups, while moveTarget gives disabled edges and named destination actions. Browser tests change assignees without changing view.</p>
+        <pre>{"const cards = () => boardGroups().flatMap((group) => group.cards.map((card) => ({ ...card, column: group.label })));"}</pre>
+      </section>
+      <section>
         <h2>Signals</h2>
         <p><code>src/state/board.js</code> keeps project cards, view mode, assignee filter, activity, and save/export status in module-scoped signals.</p>
       </section>
