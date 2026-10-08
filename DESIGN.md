@@ -2,7 +2,7 @@
 
 ## Source of truth
 - Status: Active
-- Last refreshed: 2026-10-07
+- Last refreshed: 2026-10-08
 - Primary product surfaces: overview, board/list planner, card detail, activity trail, build notes
 - Evidence reviewed: What Framework routing/state examples, current getting-started guidance, and the Vura deploy script pattern used by these starters
 
@@ -22,8 +22,8 @@
 - Hierarchy: summary, board/list controls, cards, detail editor, activity journal, implementation guide
 
 ## Visual language
-- Color: lilac canvas, peach warmth, plum controls, white cards
-- Typography: heavy system headings and plain readable body text
+- Color: quiet neutral-lilac canvas, plum controls, subtle lilac lanes and white cards
+- Typography: Avenir Next/Segoe UI sans, 32px page headings,16px readable body and14px metadata
 - Layout: the planner board is the homepage artifact; columns/list cards must be visible in the first viewport so Drift reads as a working planner rather than a landing page
 - Composition: compact copy sits beside or above live cards; board columns carry spatial context with lane headers, counts, short due dates, named disabled edge moves, and movement controls
 - Motion: short page/card entrance with reduced-motion fallback
@@ -52,3 +52,8 @@ Validation contract: Browser tests change Inez → Mara → All without changing
 ## Open questions
 
 - [ ] Choose the final Vura subdomain during deployment.
+
+
+## Modern interface consistency
+
+The primary workspace, detail views and build guide share a bounded sans-serif hierarchy, natural-case 14px chrome, 44px targets and quiet surfaces. Do not reintroduce poster headings, decorative background grids, heavy shadows or pill-shaped navigation. Brand accents and functional visualizations remain distinct; operational information takes precedence over decoration.
